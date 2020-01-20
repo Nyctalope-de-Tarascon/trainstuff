@@ -38,7 +38,6 @@ def station_select(station_list)
                        longitude: row[6],
                        country: row[8],
                        is_main_st: row[11] }
-    break if index >= 50
   end
   station_array
 end
@@ -55,7 +54,10 @@ def distance_interface
   p 'Downloading list of stations, please wait...'
   station_list = fetch_stations('https://raw.githubusercontent.com/trainline-eu/stations/master/stations.csv')
   station_array = station_select(station_list)
-  station_array.each { |st| p "#{st[:id]} - #{st[:name]}" }
+  station_array.each_with_index do |st, index|
+    p "#{st[:id]} - #{st[:name]}"
+    break if index > 50
+  end
   station = station_user_selector(station_array)
   coordinates = coordinates_buider(station)
   p '---------------------------------------------'

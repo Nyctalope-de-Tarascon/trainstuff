@@ -21,7 +21,7 @@ def station_country(country, station_list)
   station_array = []
   station_list.each_with_index do |row, index|
     if row[8].downcase == country
-      station_array << { id: index + 1, name: row[1], latitude: row[5], longitude: row[6], country: row[8], main_st: row[11] }
+      station_array << { id: index + 1, name: row[1], latitude: row[5], longitude: row[6], country: row[8], is_main_st: row[11] }
     end
   end
   station_array
@@ -61,8 +61,8 @@ end
 
 def stations_neighbour_selector(station_array, station, radius)
   station_array.keep_if do |st|
-    station[1] = st
-    distance_calc(coordinates_buider(station)) < radius
+    distance_calc(coordinates_buider([station[0], st])) < radius \
+    && !st[:latitude].nil? # && st[:is_main_st] == 't'
   end
   station_array
 end
